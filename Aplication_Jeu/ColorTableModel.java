@@ -10,13 +10,13 @@ public class ColorTableModel extends AbstractTableModel {
     public List<noteCell> list = new LinkedList<noteCell>();
 
     private Object rowData[][] = {
-            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
-            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+            {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE,Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
     };
 
-    private String columnNames[] = { "1", "2", "3", "4"};
+    private String columnNames[] = { "1", "2", "3", "4","5","6","7","8","9","10","11","12","13","14","15","16"};
 
     public ColorTableModel() {
         this(0);
@@ -31,17 +31,17 @@ public class ColorTableModel extends AbstractTableModel {
     	
         if(list.size()<page+1){
     	list.add(getAllValuesCell());
-    	System.out.println(list.get(page));
+    	//System.out.println(list.get(page));
 	    }
 		else{
-			if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrÈe
+			if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistr√©e
 				list.set(page,getAllValuesCell());
 				System.out.println(list.get(page));
 			}
 		}
         
         setPage(page+1);
-        if(list.size()>=page+1){//si la taille de la liste est supÈrieure ou Ègale
+        if(list.size()>=page+1){//si la taille de la liste est sup√©rieure ou √©gale
         	noteCell cell=list.get(page);
         	for(int row=0; row < getRowCount(); row++) {
                 for(int col=0; col < getColumnCount(); col++) {
@@ -68,7 +68,7 @@ public class ColorTableModel extends AbstractTableModel {
 	    	System.out.println(list.get(page));
 		    }
 			else{
-				if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrÈe
+				if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistr√©e
 					list.set(page,getAllValuesCell());
 					System.out.println(list.get(page));
 				}
@@ -79,7 +79,7 @@ public class ColorTableModel extends AbstractTableModel {
         	setPage(page-1);
         }
         
-        if(list.size()>=page+1){//si la taille de la liste est supÈrieure ou Ègale
+        if(list.size()>=page+1){//si la taille de la liste est sup√©rieure ou √©gale
         	noteCell cell=list.get(page);
         	int i=0;
         	for(int row=0; row < getRowCount(); row++) {
@@ -97,10 +97,10 @@ public class ColorTableModel extends AbstractTableModel {
             }
         }
     	if(list.size()==0){
-    		JOptionPane.showMessageDialog(null, "Vous Ítes sur la premiËre mesure, il n'y a donc pas de mesure avant", "Error", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "Vous √™tes sur la premi√®re mesure, il n'y a donc pas de mesure avant", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     	else{
-	    	/*if(compareNoteCell(list.get(page-1),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrÈe
+	    	/*if(compareNoteCell(list.get(page-1),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistr√©e
 				list.set(page-1,getAllValuesCell());
 			}*/
     	}
@@ -136,19 +136,6 @@ public class ColorTableModel extends AbstractTableModel {
     public int getRowCount() {
         return rowData.length;
     }
-    public String getAllValues(){//methode fausse
-    	String a="";
-    		for(int j=0;j<columnNames.length;j++){
-    			a+=getColumnName(j)+" ";
-    			for(int i=0;i<4;i++){
-    				a+=transformValues(getValueAt(i,j)+"")+";";
-    			}
-    			a+="\r\n";
-    		}
-    	
-		return a;
-    	
-    }
     public noteCell getAllValuesCell(){
     	String a="";
     	
@@ -159,10 +146,11 @@ public class ColorTableModel extends AbstractTableModel {
     			a+="\r\n";
     		}
     		noteCell cell= new noteCell(a);
+    		System.out.println(a);
 		return cell;
     	
     }
-    public String getAllcolumnValues(int column){
+    /*public String getAllcolumnValues(int column){
     	String a="";
 			a+=getColumnName(column)+" ";
 			for(int i=0;i<4;i++){
@@ -171,11 +159,22 @@ public class ColorTableModel extends AbstractTableModel {
 			a+="\r\n";
 	
 	return a;
-    }
+    }*/
 
     public Object getValueAt(int row, int column) {
         return rowData[row][column];
     }
+    /*public noteCell getAllValues(){
+		String a="";
+		for(int i=0;i<4;i++){
+			for(int j=0;j<16;j++){
+			}
+		}
+		noteCell cell= new noteCell(a);
+		System.out.println(a);
+    	return cell;
+    	
+    }*/
     public String transformValues(String s){
     	if(s.compareTo("true")==0){
     		s="1";
@@ -214,13 +213,9 @@ public class ColorTableModel extends AbstractTableModel {
     public String noteCellWriting(){
     	String a="";
     	String[] b = new String[4];
-    	for(int i=0;i<=list.size()-1;i++){
-    		b=list.get(i).toString().trim().split("\n");
-    		b[0]=(i*4)+1+" "+b[0];
-    		b[1]=(i*4)+2+" "+b[1];
-    		b[2]=(i*4)+3+" "+b[2];
-    		b[3]=(i*4)+4+" "+b[3];
-    		a+=b[0]+"\n"+b[1]+"\n"+b[2]+"\n"+b[3]+"\n";
+    	
+    	for(noteCell n: list){
+    		a+=n.toString(true);
     	}
     		
     	System.out.println(a);
