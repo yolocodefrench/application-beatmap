@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class Fenetre {
@@ -83,7 +87,6 @@ public class Fenetre {
 	    frame.setSize(400, 150);
 	    frame.setVisible(true);
 	 }
-	
 	private class BoutonRightListener implements ActionListener{
 	    public void actionPerformed(ActionEvent arg0) {
 	    	i++;
@@ -106,25 +109,29 @@ public class Fenetre {
 	  }
 	private class BoutonValiderListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			model.noteCellWriting();
 			String texte =Nom.getText()+"\r\n"+tempo.getText()+"\r\n"+artiste.getText()+"\r\n"+createur.getText()+"\r\n\r\n\r\n"+model.noteCellWriting();
-			// Création du fichier texte pour le programme
-			File fichierTexte = new File (Nom.getText()+".txt");
-			// Création de "l'écrivain"
-			FileWriter ecrireFichier;
-			
-			try{
-				// Instanciation de l'objet ecrireFichier qui va écrire dans fichierTexte.txt
-				ecrireFichier = new FileWriter(fichierTexte);
-				// Écriture d'une chaîne de caractères dans le fichier texte
-				ecrireFichier.write(texte);
-				// "Fermeture" du FileWriter
-				ecrireFichier.close();
-			}catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			JFrame parentFrame = new JFrame();
+			 
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Specify a file to save");   
+			 
+			int userSelection = chooser.showSaveDialog(parentFrame);
+			 
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File fileToSave = chooser.getSelectedFile();
+			    FileWriter fw;
+		        try {
+		            fw = new FileWriter(fileToSave);
+		            fw.write(texte);
+		            fw.flush();
+		            fw.close();
+		        } catch (Exception e3) {
+		            e3.printStackTrace();
+		        }
+
+			    
 			}
+
 		}
 		
 	}
