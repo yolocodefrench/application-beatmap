@@ -66,7 +66,6 @@ public class noteCell {
 		text+=this.tab[1][4]+";"+this.tab[1][5]+";"+this.tab[1][6]+";"+this.tab[1][7]+";"+"\r\n";
 		text+=this.tab[1][8]+";"+this.tab[1][9]+";"+this.tab[1][10]+";"+this.tab[1][11]+";"+"\r\n";
 		text+=this.tab[1][12]+";"+this.tab[1][13]+";"+this.tab[1][14]+";"+this.tab[1][15]+";"+"\r\n";
-		
 		text+=this.tab[2][0]+";"+this.tab[2][1]+";"+this.tab[2][2]+";"+this.tab[2][3]+";"+"\r\n";
 		text+=this.tab[2][4]+";"+this.tab[2][5]+";"+this.tab[2][6]+";"+this.tab[2][7]+";"+"\r\n";
 		text+=this.tab[2][8]+";"+this.tab[2][9]+";"+this.tab[2][10]+";"+this.tab[2][11]+";"+"\r\n";
