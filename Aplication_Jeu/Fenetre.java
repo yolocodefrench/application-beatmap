@@ -1,19 +1,21 @@
 package com.Aplication_Jeu;
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -24,17 +26,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 
 public class Fenetre {
 	public int i=0;
+	private String hostname ="";
 	private JPanel panTab = new JPanel();
 	private JPanel haut =new JPanel();
 	private JPanel bas = new JPanel();
 	private JPanel hautWest =new JPanel();
 	private JTextField tempo = new JTextField();
 	private JLabel tempolabel = new JLabel("Tempo : ");
+	private JTextField host = new JTextField();
+	private JLabel hostlabel = new JLabel("hostname : ");
 	private JTextField artiste = new JTextField();
 	private JLabel artisteLabel = new JLabel("Artiste : ");
 	private JTextField createur = new JTextField();
@@ -63,7 +68,7 @@ public class Fenetre {
 	    
 	    haut.setLayout(new BorderLayout());
 	    haut.add(hautWest, BorderLayout.WEST);
-	    hautWest.setLayout(new GridLayout(4,2));
+	    hautWest.setLayout(new GridLayout(5,2));
 
 	    scrollPane = new JScrollPane(table);
 	    panTab.add(scrollPane, BorderLayout.CENTER);
@@ -77,16 +82,36 @@ public class Fenetre {
 	    hautWest.add(artiste);
 	    hautWest.add(createurLabel);
 	    hautWest.add(createur);
+	    hautWest.add(hostlabel);
+	    hautWest.add(host);
 	    bas.add(boutonLeft, BorderLayout.WEST);
 	    bas.add(boutonRight, BorderLayout.EAST);
 	    bas.add(panTab, BorderLayout.CENTER);
 	    bas.add(boutonValider, BorderLayout.SOUTH);
+	    tempo.addFocusListener(new FocusAdapter() {
+	        public void focusLost(FocusEvent e) {
+	        	String tempoS=tempo.getText();
+	        	try{
+	        		if(tempoS.compareTo("")==0){
+	        		
+	        		}
+	        		else{
+	        			int tempoI=Integer.parseInt(tempoS);
+	        		}
+	        	}
+	        	catch(NumberFormatException ne){
+	        		JOptionPane.showMessageDialog(null, "Vous n'avez pas rentré un nombre dans le champ du tempo", "Probleme", JOptionPane.ERROR_MESSAGE);
+		        	tempo.requestFocusInWindow();
+	        	}
+	        }
+	    });
 	    boutonRight.addActionListener(new BoutonRightListener());
 	    boutonLeft.addActionListener(new BoutonLeftListener());
 	    boutonValider.addActionListener(new BoutonValiderListener());
 	    frame.setSize(400, 150);
 	    frame.setVisible(true);
 	 }
+
 	private class BoutonRightListener implements ActionListener{
 	    public void actionPerformed(ActionEvent arg0) {
 	    	i++;
@@ -101,7 +126,7 @@ public class Fenetre {
 	    	if(i<1)
 	    		i=1;
 			model.previousPage();
-			System.out.println(i);
+			//System.out.println(i);
 			
 	    	
 			
@@ -109,8 +134,17 @@ public class Fenetre {
 	  }
 	private class BoutonValiderListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
+			Robot robot = null;
+			try {
+				robot = new Robot();
+			} catch (AWTException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			hostname=host.getText();
 			String texte =Nom.getText()+"\r\n"+tempo.getText()+"\r\n"+artiste.getText()+"\r\n"+createur.getText()+"\r\n\r\n\r\n"+model.noteCellWriting();
 			JFrame parentFrame = new JFrame();
+			File fileToSave = new File("");
 			 
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Specify a file to save");   
@@ -118,7 +152,7 @@ public class Fenetre {
 			int userSelection = chooser.showSaveDialog(parentFrame);
 			 
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
-				File fileToSave = chooser.getSelectedFile();
+				fileToSave= chooser.getSelectedFile();
 			    FileWriter fw;
 		        try {
 		            fw = new FileWriter(fileToSave);
@@ -131,6 +165,30 @@ public class Fenetre {
 
 			    
 			}
+			Thread thread = new Thread();
+	        try {
+	        	String test="cmd /c start cmd.exe";
+	            Runtime.getRuntime().exec(test);
+	            String command = "pscp -r -p "+fileToSave+" pi@"+hostname+":/var/www/html/osuStyle";
+	            System.out.println(command);
+	            Keyboard keyboard;
+				try {
+					//Fenetremdp fenmdp=new Fenetremdp();
+					keyboard = new Keyboard();
+					thread.sleep(1000);
+		            keyboard.type(command);
+		            robot.keyPress(KeyEvent.VK_ENTER);
+		            
+				} catch (AWTException | InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+	            
+	            
+	        } catch (IOException ex) {
+	            Logger.getLogger(Keyboard.class.getName()).log(Level.SEVERE, null, ex);
+	        }
 
 		}
 		
