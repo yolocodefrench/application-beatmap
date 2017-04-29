@@ -36,7 +36,7 @@ public class ColorTableModel extends AbstractTableModel {
 		else{
 			if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrée
 				list.set(page,getAllValuesCell());
-				System.out.println(list.get(page));
+				//System.out.println(list.get(page));
 			}
 		}
         
@@ -63,47 +63,46 @@ public class ColorTableModel extends AbstractTableModel {
 
 	public void previousPage() {
 		System.out.println(page);
-		if(list.size()<page+1){
-	    	list.add(getAllValuesCell());
-	    	System.out.println(list.get(page));
-		    }
-			else{
-				if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrée
-					list.set(page,getAllValuesCell());
-					System.out.println(list.get(page));
-				}
-			}
-        if(page <= 0)
-            setPage(0);
-        else{
-        	setPage(page-1);
-        }
-        
-        if(list.size()>=page+1){//si la taille de la liste est supérieure ou égale
-        	noteCell cell=list.get(page);
-        	int i=0;
-        	for(int row=0; row < getRowCount(); row++) {
-                for(int col=0; col < getColumnCount(); col++) {
-                	//System.out.println(i++);
-                	setValueAt(cell.putNoteCellTable(cell, row, col), row , col);
-                }
-            }
-    	}
-        else{
-        	for(int row=0; row < getRowCount(); row++) {
-                for(int col=0; col < getColumnCount(); col++) {
-                    setValueAt(Boolean.FALSE, row, col);
-                }
-            }
-        }
-    	if(list.size()==0){
+    	if(getColumnName(0).compareTo("1")==0){
     		JOptionPane.showMessageDialog(null, "Vous êtes sur la première mesure, il n'y a donc pas de mesure avant", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     	else{
-	    	/*if(compareNoteCell(list.get(page-1),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrée
-				list.set(page-1,getAllValuesCell());
-			}*/
+    		if(list.size()<page+1){
+    	    	list.add(getAllValuesCell());
+    	    	//System.out.println(list.get(page));
+    		    }
+    			else{
+    				if(compareNoteCell(list.get(page),getAllValuesCell())==false){//compare la valeur de la liste avec la valeur qui vient d'etre enregistrée
+    					list.set(page,getAllValuesCell());
+    					//System.out.println(list.get(page));
+    				}
+    			}
+            if(page <= 0)
+                setPage(0);
+            else{
+            	setPage(page-1);
+            }
+            
+            if(list.size()>=page+1){//si la taille de la liste est supérieure ou égale
+            	noteCell cell=list.get(page);
+            	int i=0;
+            	for(int row=0; row < getRowCount(); row++) {
+                    for(int col=0; col < getColumnCount(); col++) {
+                    	//System.out.println(i++);
+                    	setValueAt(cell.putNoteCellTable(cell, row, col), row , col);
+                    }
+                }
+        	}
+            else{
+            	for(int row=0; row < getRowCount(); row++) {
+                    for(int col=0; col < getColumnCount(); col++) {
+                        setValueAt(Boolean.FALSE, row, col);
+                    }
+                }
+            }
     	}
+		
+
     }
     
     public void setPage(int page) {
@@ -146,7 +145,7 @@ public class ColorTableModel extends AbstractTableModel {
     			a+="\r\n";
     		}
     		noteCell cell= new noteCell(a);
-    		System.out.println(a);
+    		//System.out.println(a);
 		return cell;
     	
     }
